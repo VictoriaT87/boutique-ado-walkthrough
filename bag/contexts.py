@@ -13,19 +13,34 @@ def bag_contents(request):
     bag = request.session.get('bag', {})
 
     # for each idem id and the quantity in bag session
-    for item_id, quantity in bag.items():
-        #get the product
-        product = get_object_or_404(Product, pk=item_id)
-        # total is quantity times the price
-        total += quantity * product.price
-        # incremenet product count is quantity
-        product_count += quantity
-        # append the bag with each context
-        bag_items.append({
-            'item_id': item_id,
-            'quantity': quantity,
-            'product': product,
-        })
+    for item_id, item_data in bag.items():
+        # if the item_data is an integer, it doesn't have a
+        # dictionary, so doesn't have a size
+        if isinstance(item_data, int):
+            #get the product
+            product = get_object_or_404(Product, pk=item_id)
+            # total is quantity times the price
+            total += item_data * product.price
+            # incremenet product count is quantity
+            product_count += item_data
+            # append the bag with each context
+            bag_items.append({
+                'item_id': item_id,
+                'quantity': item_data,
+                'product': product,
+            })
+        else:
+            product = get_object_or_404(Product, pk=item_id)
+            # iterate through the dictionary with sizes
+            for size, quantity in item_data['items_by_size'].items():
+                total += quantity * product.price
+                product_count += quantity
+                bag_items.append({
+                    'item_id': item_id,
+                    'quantity': item_data,
+                    'product': product,
+                    'size': size,
+                })
 
     # id the total price is less than the free delivery price in settings
     if total < settings.FREE_DELIVERY_THRESHOLD:

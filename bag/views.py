@@ -15,15 +15,34 @@ def add_to_bag(request, item_id):
     # quantity is int number of string number from template
     quantity = int(request.POST.get('quantity'))
     redirect_url = request.POST.get('redirect_url')
+    size = None
+
+    if 'product_size' in request.POST:
+        size = request.POST['product_size']
     # bag session, ends when window closes
     bag = request.session.get('bag', {})
 
-    # if item id is in bag session, add to quantity
-    if item_id in list(bag.keys()):
-        bag[item_id] += quantity
-    # else quantity stays the same
+    if size:
+        # if the item has a size, add each size to quantity
+        # separately in a dictionary
+        if item_id in list(bag.keys()):
+            # if the item is already in the bag,
+            # and if same product id and size exists
+            # add 1
+            if size in bag[item_id]['items_by_size'].keys():
+                bag[item_id]['items_by_size'][size] += quantity
+            else:
+                bag[item_id]['items_by_size'][size] = quantity
+        else:
+            bag[item_id] = {'items_by_size': {size: quantity}}
     else:
-        bag[item_id] = quantity
+        # if there's no size,
+        # item id is in bag session, add to quantity
+        if item_id in list(bag.keys()):
+            bag[item_id] += quantity
+        else:
+            # else quantity stays the same
+            bag[item_id] = quantity 
 
     request.session['bag'] = bag
     return redirect(redirect_url)
