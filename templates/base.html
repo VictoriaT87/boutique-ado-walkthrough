@@ -79,10 +79,12 @@
                         </div>
                     </li>
                     <li class="list-inline-item">
+                        <!-- highlight the bag item if something is in it (grand_total from context processor) -->
                         <a class="{% if grand_total %}text-info font-weight-bold{% else %}text-black{% endif %} nav-link" href="{% url 'view_bag' %}">
                             <div class="text-center">
                                 <div><i class="fas fa-shopping-bag fa-lg"></i></div>
                                 <p class="my-0">
+                                    <!-- from context processor - if grand total exists, show on page -->
                                     {% if grand_total %}
                                         ${{ grand_total|floatformat:2 }}
                                     {% else %}
