@@ -58,6 +58,9 @@ form.addEventListener('submit', function(ev) {
     // disable to prevent multiple submissions
     card.update({ 'disabled': true});
     $('#submit-button').attr('disabled', true);
+    // show blue loading arrow on payment
+    $('#payment-form').fadeToggle(100);
+    $('#loading-overlay').fadeToggle(100);
     // get stripe confirm payment securely
     stripe.confirmCardPayment(clientSecret, {
         payment_method: {
@@ -73,6 +76,8 @@ form.addEventListener('submit', function(ev) {
                 </span>
                 <span>${result.error.message}</span>`;
             $(errorDiv).html(html);
+            $('#payment-form').fadeToggle(100);
+            $('#loading-overlay').fadeToggle(100);
             //if error with card, re-enable buttons to fix
             card.update({ 'disabled': false});
             $('#submit-button').attr('disabled', false);
