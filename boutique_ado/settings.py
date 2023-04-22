@@ -185,3 +185,4 @@ STANDARD_DELIVERY_PERCENTAGE = 10
 STRIPE_CURRENCY = 'usd' # value of US Dollars
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '') # get key from env.py
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '') # get key from env.py
+STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '') # get key from env.py
