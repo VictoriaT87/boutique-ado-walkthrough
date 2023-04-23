@@ -12,7 +12,6 @@ def profile(request):
     profile = get_object_or_404(UserProfile, user=request.user)
 
     if request.method == 'POST':
-        # create new instance of userprofile using posted data
         form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
@@ -25,7 +24,6 @@ def profile(request):
     context = {
         'form': form,
         'orders': orders,
-        # for toast template
         'on_profile_page': True
     }
 
@@ -43,7 +41,7 @@ def order_history(request, order_number):
     template = 'checkout/checkout_success.html'
     context = {
         'order': order,
-        # if the user is from the order history view
+        # used in tast template
         'from_profile': True,
     }
 
