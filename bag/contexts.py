@@ -17,7 +17,7 @@ def bag_contents(request):
         # if the item_data is an integer, it doesn't have a
         # dictionary, so doesn't have a size
         if isinstance(item_data, int):
-            #get the product
+            # get the product
             product = get_object_or_404(Product, pk=item_id)
             # total is quantity times the price
             total += item_data * product.price
@@ -52,9 +52,9 @@ def bag_contents(request):
         # else delivery is free
         delivery = 0
         free_delivery_delta = 0
-    
+
     grand_total = delivery + total
-    
+
     context = {
         'bag_items': bag_items,
         'total': total,
